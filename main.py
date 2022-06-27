@@ -43,7 +43,7 @@ class OrderItem(BaseModel):
     prod_id = ForeignKeyField(Product)
     quantity = IntegerField()
     item_price = FloatField()
-    ddd = FloatField()
+
 
 vendors = Vendor.select(Vendor.vend_id, Vendor.vend_name, Product.prod_id, OrderItem.quantity)\
                 .join(Product)\
