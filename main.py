@@ -45,10 +45,15 @@ class OrderItem(BaseModel):
     item_price = FloatField()
 
 
-vendors = Vendor.select(Vendor.vend_id, Vendor.vend_name, Product.prod_id, OrderItem.quantity).join(Product).join(OrderItem)
+vendors = Vendor.select(Vendor.vend_id, Vendor.vend_name, Product.prod_id, OrderItem.quantity)\
+                .join(Product)\
+                .join(OrderItem)
 
 for vendor in vendors:
-    print(f"{vendor.vend_id} --> {vendor.vend_name} --> {vendor.product.prod_id} --> {vendor.product.orderitem.quantity}")
+    print(f"{vendor.vend_id} --> "
+          f"{vendor.vend_name} --> "
+          f"{vendor.product.prod_id} --> "
+          f"{vendor.product.orderitem.quantity}")
 
 
 
