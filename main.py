@@ -9,6 +9,21 @@ class BaseModel(Model):
         database = db
 
 
+class Customer(BaseModel):
+    class Meta:
+        db_table = "customers"
+
+    cust_id = TextField()
+    cust_name = TextField()
+    cust_address = TextField()
+    cust_state = TextField()
+    cust_zip = TextField()
+    cust_country = TextField()
+    cust_contact = TextField()
+    cust_email = TextField()
+    cust_city = TextField()
+
+
 class Vendor(BaseModel):
     class Meta:
         db_table = "vendors"
@@ -33,12 +48,21 @@ class Product(BaseModel):
     prod_desc = TextField()
 
 
+class Order(BaseModel):
+    class Meta:
+        db_table = "orders"
+
+    order_num = IntegerField()
+    order_date = TextField()
+    cust_id = ForeignKeyField(Customer)
+
+
 class OrderItem(BaseModel):
     class Meta:
         db_table = "orderitems"
         primary_key = CompositeKey('order_num', 'order_item')
 
-    order_num = ForeignKeyField(Orders)
+    order_num = ForeignKeyField()
     order_item = IntegerField()
     prod_id = ForeignKeyField(Product)
     quantity = IntegerField()
