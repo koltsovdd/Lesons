@@ -13,7 +13,7 @@ class Customer(BaseModel):
     class Meta:
         db_table = "customers"
 
-    cust_id = TextField()
+    cust_id = IntegerField()
     cust_name = TextField()
     cust_address = TextField()
     cust_state = TextField()
