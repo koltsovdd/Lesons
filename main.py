@@ -1,7 +1,6 @@
 from peewee import *
 
-db = PostgresqlDatabase('', user='postgres', password='',
-                        host='127.0.0.1', port=5432)
+from config import db
 
 
 class BaseModel(Model):
@@ -62,24 +61,8 @@ class OrderItem(BaseModel):
         db_table = "orderitems"
         primary_key = CompositeKey('order_num', 'order_item')
 
-    order_num = ForeignKeyField()
+    order_num = ForeignKeyField(Order)
     order_item = IntegerField()
     prod_id = ForeignKeyField(Product)
     quantity = IntegerField()
     item_price = FloatField()
-
-
-vendors = Vendor.select(Vendor.vend_id, Vendor.vend_name, Product.prod_id, OrderItem.quantity)\
-                .join(Product)\
-                .join(OrderItem)
-
-for vendor in vendors:
-    print(f"{vendor.vend_id} --> "
-          f"{vendor.vend_name} --> "
-          f"{vendor.product.prod_id} --> "
-          f"{vendor.product.orderitem.quantity}")
-
-
-
-
-
