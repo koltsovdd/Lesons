@@ -12,7 +12,7 @@ class Customer(BaseModel):
     class Meta:
         db_table = "customers"
 
-    cust_id = IntegerField()
+    cust_id = TextField(primary_key=True)
     cust_name = TextField()
     cust_address = TextField()
     cust_state = TextField()
@@ -27,7 +27,7 @@ class Vendor(BaseModel):
     class Meta:
         db_table = "vendors"
 
-    vend_id = IntegerField(primary_key=True)
+    vend_id = TextField(primary_key=True)
     vend_name = TextField(null=False)
     vend_address = TextField()
     vend_city = TextField()
@@ -40,7 +40,7 @@ class Product(BaseModel):
     class Meta:
         db_table = "products"
 
-    prod_id = IntegerField(primary_key=True)
+    prod_id = TextField(primary_key=True)
     vend_id = ForeignKeyField(Vendor)
     prod_name = TextField()
     prod_price = FloatField()
@@ -51,7 +51,7 @@ class Order(BaseModel):
     class Meta:
         db_table = "orders"
 
-    order_num = IntegerField()
+    order_id = TextField(primary_key = True)
     order_date = TextField()
     cust_id = ForeignKeyField(Customer)
 
@@ -59,9 +59,9 @@ class Order(BaseModel):
 class OrderItem(BaseModel):
     class Meta:
         db_table = "orderitems"
-        primary_key = CompositeKey('order_num', 'order_item')
+        primary_key = CompositeKey('order_id', 'order_item')
 
-    order_num = ForeignKeyField(Order)
+    order_id = ForeignKeyField(Order)
     order_item = IntegerField()
     prod_id = ForeignKeyField(Product)
     quantity = IntegerField()

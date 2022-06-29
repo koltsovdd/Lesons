@@ -10,14 +10,15 @@ from main import Vendor, Product, OrderItem, Order, Customer
 #           f"{vendor.product.prod_id} --> "
 #           f"{vendor.product.orderitem.quantity}")
 
-DisplayData = Vendor.select(Vendor.vend_address, Customer.cust_name).where(Customer.cust_name == "Village Toys") \
+display_data = Vendor.select(Vendor.vend_address, OrderItem.order_id) \
         .join(Product) \
         .join(OrderItem)\
         .join(Order) \
         .join(Customer)\
+        .where(Customer.cust_id == '1000000001') \
 
-for DisplayData in Vendor:
-    print(f"{Vendor.vend_address} -->"
-          f"{Customer.cust_name}")
+for data in display_data:
+    print(f"{data.vend_address} -->"
+          f"{data.product.orderitem.order_id}")
 
     
