@@ -1,7 +1,6 @@
 from peewee import *
 
-db = PostgresqlDatabase('', user='postgres', password='',
-                        host='127.0.0.1', port=5432)
+from config import db
 
 
 class BaseModel(Model):
@@ -9,11 +8,26 @@ class BaseModel(Model):
         database = db
 
 
+class Customer(BaseModel):
+    class Meta:
+        db_table = "customers"
+
+    cust_id = TextField(primary_key=True)
+    cust_name = TextField()
+    cust_address = TextField()
+    cust_state = TextField()
+    cust_zip = TextField()
+    cust_country = TextField()
+    cust_contact = TextField()
+    cust_email = TextField()
+    cust_city = TextField()
+
+
 class Vendor(BaseModel):
     class Meta:
         db_table = "vendors"
 
-    vend_id = IntegerField(primary_key=True)
+    vend_id = TextField(primary_key=True)
     vend_name = TextField(null=False)
     vend_address = TextField()
     vend_city = TextField()
@@ -26,36 +40,50 @@ class Product(BaseModel):
     class Meta:
         db_table = "products"
 
-    prod_id = IntegerField(primary_key=True)
+    prod_id = TextField(primary_key=True)
     vend_id = ForeignKeyField(Vendor)
     prod_name = TextField()
     prod_price = FloatField()
     prod_desc = TextField()
 
 
+class Order(BaseModel):
+    class Meta:
+        db_table = "orders"
+
+    order_id = TextField(primary_key = True)
+    order_date = TextField()
+    cust_id = ForeignKeyField(Customer)
+
+
 class OrderItem(BaseModel):
     class Meta:
-        db_table = "orderitems"
-        primary_key = CompositeKey('order_num', 'order_item')
+        db_table = "orderItems"
+        primary_key = CompositeKey('order_id', 'order_item')
 
-    order_num = ForeignKeyField(Orders)
+    order_id = ForeignKeyField(Order)
     order_item = IntegerField()
     prod_id = ForeignKeyField(Product)
     quantity = IntegerField()
     item_price = FloatField()
 
 
-vendors = Vendor.select(Vendor.vend_id, Vendor.vend_name, Product.prod_id, OrderItem.quantity)\
-                .join(Product)\
-                .join(OrderItem)
+class User(BaseModel):
+    class Meta:
+        db_table = "users"
 
-for vendor in vendors:
-    print(f"{vendor.vend_id} --> "
-          f"{vendor.vend_name} --> "
-          f"{vendor.product.prod_id} --> "
-          f"{vendor.product.orderitem.quantity}")
-
-
+    user_id = IntegerField(primary_key=True)
+    user_name = TextField()
+    user_surname = TextField()
+    user_email = TextField()
+    user_age = IntegerField()
 
 
+class Message(BaseModel):
+    class Meta:
+        db_table = "messages"
 
+    message_id = IntegerField(primary_key=True)
+    from_user_id = ForeignKeyField(User)
+    to_user_id = ForeignKeyField(User)
+    message_text = TextField()
