@@ -58,7 +58,7 @@ class Order(BaseModel):
 
 class OrderItem(BaseModel):
     class Meta:
-        db_table = "orderitems"
+        db_table = "orderItems"
         primary_key = CompositeKey('order_id', 'order_item')
 
     order_id = ForeignKeyField(Order)
@@ -66,3 +66,24 @@ class OrderItem(BaseModel):
     prod_id = ForeignKeyField(Product)
     quantity = IntegerField()
     item_price = FloatField()
+
+
+class User(BaseModel):
+    class Meta:
+        db_table = "users"
+
+    user_id = IntegerField(primary_key=True)
+    user_name = TextField()
+    user_surname = TextField()
+    user_email = TextField()
+    user_age = IntegerField()
+
+
+class Message(BaseModel):
+    class Meta:
+        db_table = "messages"
+
+    message_id = IntegerField(primary_key=True)
+    from_user_id = ForeignKeyField(User)
+    to_user_id = ForeignKeyField(User)
+    message_text = TextField()
