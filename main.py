@@ -70,9 +70,9 @@ class OrderItem(BaseModel):
 
 class User(BaseModel):
     class Meta:
-        db_table = "users"
+        db_table = "Users"
 
-    user_id = IntegerField(primary_key=True)
+    user_id = TextField(primary_key=True)
     user_name = TextField()
     user_surname = TextField()
     user_email = TextField()
@@ -81,9 +81,9 @@ class User(BaseModel):
 
 class Message(BaseModel):
     class Meta:
-        db_table = "messages"
+        db_table = "Mesagges"
 
-    message_id = IntegerField(primary_key=True)
+    mesagges_id = TextField(primary_key=True)
     from_user_id = ForeignKeyField(User)
     to_user_id = ForeignKeyField(User)
-    message_text = TextField()
+    mesagges_text = TextField()

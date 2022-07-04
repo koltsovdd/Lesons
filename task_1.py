@@ -24,28 +24,34 @@ from main import Vendor, Product, OrderItem, Order, Customer, User, Message
 #           f"{data.product.orderItem.order_id}")
 
 
-display_users = User.select(User.user_id, User.user_age, User.user_name, User.user_email, User.user_surname)
+display_users = User.select(User).order_by(User.user_id.desc()).dicts()
 
-display_messages = Message.select(Message.message_id, Message.message_text, Message.from_user_id, Message.to_user_id)
+display_messages = Message.select(Message).dicts()
 
-display_user_1 = Message.select(Message.message_text)\
-            .where(Message.to_user_id == 1, Message.to_user_id == 1)
+display_user_1 = Message.select(Message.mesagges_text)\
+            .where(Message.from_user_id == 1)\
+            .dicts()
 
-display_some_information = User.select(User.user_name, Message.message_text)\
+display_some_information = User.select(User.user_name, Message.mesagges_text)\
             .join(Message, on=User.user_id == Message.to_user_id)\
-            .where(Message.from_user_id == 1, Message.to_user_id == 1)
+            .where(Message.to_user_id == 1)\
+            .dicts()
 
-display_surnames_and_count_2 = User.select(User.user_surname, fn.count(Message.to_user_id))\
-            .join(Message, on=User.user_id == Message.to_user_id)\
-            .group_by(Message.to_user_id)
+display_surnames_and_count_1 = User.select(User.user_surname, fn.count(Message.to_user_id))\
+            .join(Message, on=User.user_id == Message.from_user_id)\
+            .group_by(User.user_surname)\
+            .dicts()
 
 display_surnames_and_count_2 = User.select(User.user_surname, fn.count(Message.from_user_id))\
-            .join(Message, on=User.user_id == Message.from_user_id)\
-            .group_by(Message.from_user_id)
+            .join(Message, on=User.user_id == Message.to_user_id)\
+            .group_by(User.user_surname)\
+            .dicts()
 
 
-display_users_avg_age = User.select(fn.avg(User.user_age))
+display_users_avg_age = User.select(fn.avg(User.user_age)).dicts()
 
+for i in display_users:
+    print(i)
 
 
 
